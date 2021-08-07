@@ -1,6 +1,6 @@
 package com.igniteplus.data.pipeline.service
 import com.igniteplus.data.pipeline.exception.FileReadException
-import org.apache.spark.sql.{DataFrame, SparkSession, internal}
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
 
 object FileReaderService{
