@@ -1,13 +1,14 @@
 package com.igniteplus.data.pipeline.constants
 
-import com.igniteplus.data.pipeline.util.ApplicationUtil.createSparkSession
+import com.igniteplus.data.pipeline.util.ApplicationUtil.{createSparkSession, getSparkConf}
 
 object ApplicationConstants {
 
   //SPARK SESSION
-  val APP_NAME = "product"
-  val MASTER_NAME = "local"
-  implicit val spark = createSparkSession(APP_NAME,MASTER_NAME)
+  val SPARK_CONF = getSparkConf()
+  implicit val spark = createSparkSession(SPARK_CONF)
+
+  //READ
   val FILE_TYPE:String = "csv"
 
   //LOCATIONS
