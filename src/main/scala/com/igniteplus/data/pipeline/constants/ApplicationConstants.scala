@@ -4,8 +4,11 @@ import com.igniteplus.data.pipeline.util.ApplicationUtil.{createSparkSession, ge
 
 object ApplicationConstants {
 
+  val SPARK_CONF_FILE_NAME = "spark.conf"
+
   //SPARK SESSION
-  val SPARK_CONF = getSparkConf()
+  val SPARK_CONF = getSparkConf(SPARK_CONF_FILE_NAME)
+
   implicit val spark = createSparkSession(SPARK_CONF)
 
   //READ

@@ -7,11 +7,11 @@ import java.util.Properties
 import scala.collection.JavaConverters._
 
 object ApplicationUtil{
-
-  def getSparkConf(): SparkConf ={
+  /*  */
+  def getSparkConf(fileName: String): SparkConf ={
     val sparkAppConf = new SparkConf()
     val props = new Properties()
-    props.load(Source.fromFile("spark.conf").bufferedReader())
+    props.load(Source.fromFile(fileName).bufferedReader())
     props.asScala.foreach(kv => sparkAppConf.set(kv._1,kv._2))
     sparkAppConf
   }
@@ -20,4 +20,5 @@ object ApplicationUtil{
     implicit val spark:SparkSession = SparkSession.builder().config(sparkConfiguration).getOrCreate()
     spark
   }
+
 }
