@@ -1,10 +1,26 @@
 package com.igniteplus.data.pipeline.service
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import com.igniteplus.data.pipeline.exception.FileReadException
+import org.apache.spark.sql.{DataFrame, SparkSession, internal}
 
 
 object FileReaderService{
-  def readFile(path:String)(implicit spark:SparkSession): DataFrame = {
-      val fileDf:DataFrame = spark.read.format("csv").option("header","true").option("inferSchema","true").csv(path)
-      fileDf
+  def readFile(path:String, fileFormat:String)(implicit spark:SparkSession): DataFrame = {
+
+    val fileDf: DataFrame =
+          try{
+          spark.read.format(fileFormat).option("header", "true").option("inferSchema", "true").load(path)
+        }
+    catch {
+        case e: Exception =>
+          println("unable to read files in the given location ")
+          spark.emptyDataFrame
+      }
+    val dfDataCount: Long = fileDf.count()
+
+    if(dfDataCount == 0) {
+      throw FileReadException("No files read from the file reader ")
+    }
+
+    fileDf
   }
 }

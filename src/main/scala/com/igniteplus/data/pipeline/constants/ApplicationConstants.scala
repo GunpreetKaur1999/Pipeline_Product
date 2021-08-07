@@ -1,31 +1,49 @@
 package com.igniteplus.data.pipeline.constants
 
-import com.igniteplus.data.pipeline.service.FileReaderService.readFile
-import com.igniteplus.data.pipeline.transform.dataTypeValidation.dataTypeValidation
-import com.igniteplus.data.pipeline.transform.deDuplication.deDuplication
-import org.apache.spark.sql.DataFrame
 import com.igniteplus.data.pipeline.util.ApplicationUtil.createSparkSession
-import org.apache.spark.sql.functions.col
 
 object ApplicationConstants {
+
   //SPARK SESSION
   val APP_NAME = "product"
   val MASTER_NAME = "local"
-  val spark = createSparkSession(APP_NAME,MASTER_NAME)
+  implicit val spark = createSparkSession(APP_NAME,MASTER_NAME)
+  val FILE_TYPE:String = "csv"
 
   //LOCATIONS
-  val INPUT_LOCATION_CLICKSTREAM = "data/Input/clickstream/clickstream_log.csv"
-  val INPUT_LOCATION_ITEM = "data/Input/item/item_data.csv"
+  val INPUT_LOCATION_CLICKSTREAM:String = "data/Input/clickstream/clickstream_log.csv"
+  val INPUT_LOCATION_ITEM:String = "data/Input/item/item_data.csv"
+  val NULL_VALUES_PATH:String = "data/Input/null-values/null_values.csv"
 
-  //DATAFRAMES
-  val CLICKSTREAM_DATA: DataFrame = readFile(INPUT_LOCATION_CLICKSTREAM)(spark)
-  val ITEM_DATA:DataFrame = readFile(INPUT_LOCATION_ITEM)(spark)
-  val VALIDATED_DATA: DataFrame = dataTypeValidation(CLICKSTREAM_DATA)(spark)
-  val DEDUPLICATED_DATA: DataFrame = deDuplication(VALIDATED_DATA)(spark)
+  //PARAMETERS TO FUNCTIONS
 
-  //COLUMNS
+  //PARAMETERS FOR VALIDATED DATA
+  val columnToBeValidated_Date:String = "event_timestamp"
+  val formatYouWantIn_Date:String = "M/dd/yyyy H:mm"
+  val castTo:String = "timestamp"
+
+  //PARAMETERS FOR consistentNamesDf
+  val columnToBeModified:String = "redirection_source"
+  val columnToBeNamed:String = "redirection_source"
+
+  //PARAMETERS FOR TRIM_FUNCTION
+  val columnToBeTrimmed:String = "event_timestamp"
+
+  //PARAMETERS FOR DE_DUPLICATION
+  val SEQ_CLICKSTREAM_PRIMARY_KEYS:Seq[String] = Seq("session_id","item_id")
+  val SEQ_ITEM_PRIMARY_KEYS:Seq[String] = Seq("item_id")
+
+  val toOrderBy:String = "event_timestamp"
+  val refColumn:String = "rowNumber"
+  val filterExp:String = "rowNumber==1"
+  //val toPartitionBy:Seq[String] = SEQ_CLICKSTREAM_PRIMARY_KEYS
 
 
+  //WRITER
+  val FILE_TYPE_WRITE= "csv"
 
+  //PARAMETERS FOR NULL_VALUES_CHECK_AND_REMOVE
+  val clickstream_columns_check_NULL = Seq("session_id","item_id","event_timestamp","redirection_source","visitor_id","device_type")
+  val item_columns_check_NULL = Seq("item_id","item_price","product_type","department_name")
 
 }

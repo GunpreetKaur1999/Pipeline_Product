@@ -1,7 +1,7 @@
 package com.igniteplus.data.pipeline.util
 import org.apache.spark.sql.SparkSession
 
-object ApplicationUtil {
+object ApplicationUtil{
   def createSparkSession(appNamePass:String,masterName:String):SparkSession = {
     implicit val spark:SparkSession = SparkSession.builder().master(masterName).appName(appNamePass).getOrCreate()
     spark
