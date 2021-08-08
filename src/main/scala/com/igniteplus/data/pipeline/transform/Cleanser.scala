@@ -1,8 +1,8 @@
 package com.igniteplus.data.pipeline.transform
 
-import org.apache.spark.sql.{DataFrame}
+import org.apache.spark.sql.{Column, DataFrame}
 import org.apache.spark.sql.expressions.Window
-import org.apache.spark.sql.functions.{col, desc, row_number, trim}
+import org.apache.spark.sql.functions.{col, desc, row_number, trim, when}
 import com.igniteplus.data.pipeline.service.FileWriterService.writeFile
 
 object Cleanser {
@@ -42,21 +42,29 @@ object Cleanser {
   }
 
   /*FUNCTION TO CHECK NULL VALUES AND WRITE IT TO A FILE*/
-  def nullValuesCheckAndRemove(df:DataFrame,columnName:Seq[String],fileType:String,filePath:String) = {
-    var notNullDf:DataFrame=df
-    for (columnName <- columnName) {
-      notNullDf = df.filter(df(columnName).isNotNull)
-    }
-    notNullDf
-  }
+//  def nullValuesCheckAndRemove(df:DataFrame,columnName:Seq[String],fileType:String,filePath:String) = {
+//    var notNullDf:DataFrame=df
+//    for (columnName <- columnName) {
+//      notNullDf = df.filter(df(columnName).isNotNull)
+//    }
+//    notNullDf
+//  }
+//
+//  /*WRITE NULL VALUES TO A FILE*/
+//  def writeNullValues(df:DataFrame,columnName:Seq[String],fileType:String,filePath:String) = {
+//    var nullDf:DataFrame=df
+//    for (columnName <- columnName) {
+//      nullDf = df.filter(df(columnName).isNull)
+//    }
+//    writeFile(nullDf,fileType,filePath)
+//  }
 
-  /*WRITE NULL VALUES TO A FILE*/
-  def writeNullValues(df:DataFrame,columnName:Seq[String],fileType:String,filePath:String) = {
-    var nullDf:DataFrame=df
-    for (columnName <- columnName) {
-      nullDf = df.filter(df(columnName).isNull)
-    }
-    writeFile(nullDf,fileType,filePath)
+  def nullValueCheck(df: DataFrame,primaryKeyColumns :Seq[String]) : DataFrame = {
+    val primaryKeyColumnsAsColumnDataType : Seq[Column] = primaryKeyColumns.map(x => col(x))
+    val condition : Column = primaryKeyColumnsAsColumnDataType.map(x => x.isNull).reduce(_||_)
+    val nullFlag : DataFrame = df.withColumn("nullFlag",when(condition,"true").otherwise("false"))
+    nullFlag.show()
+    nullFlag
   }
 
 }
