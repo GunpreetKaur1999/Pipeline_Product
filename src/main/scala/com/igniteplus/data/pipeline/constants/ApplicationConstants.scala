@@ -32,8 +32,8 @@ object ApplicationConstants {
   val columnToBeTrimmed:String = "event_timestamp"
 
   //PARAMETERS FOR DE_DUPLICATION
-  val SEQ_CLICKSTREAM_PRIMARY_KEYS:Seq[String] = Seq("session_id","item_id")
-  val SEQ_ITEM_PRIMARY_KEYS:Seq[String] = Seq("item_id")
+ // val SEQ_CLICKSTREAM_PRIMARY_KEYS:Seq[String] = Seq("session_id","item_id")
+  //val SEQ_ITEM_PRIMARY_KEYS:Seq[String] = Seq("item_id")
 
   val toOrderBy:String = "event_timestamp"
   val refColumn:String = "rowNumber"
@@ -45,7 +45,7 @@ object ApplicationConstants {
   val FILE_TYPE_WRITE= "csv"
 
   //PARAMETERS FOR NULL_VALUES_CHECK_AND_REMOVE
-  val clickstream_columns_check_NULL = Seq("session_id","item_id","event_timestamp","redirection_source","visitor_id","device_type")
-  val item_columns_check_NULL = Seq("item_id","item_price","product_type","department_name")
+  val PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA = Seq("session_id","item_id")
+  val PRIMARY_KEY_COLUMNS_ITEM_DATA = Seq("item_id")
 
 }
