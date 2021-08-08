@@ -35,6 +35,7 @@ object PipelineService {
     stopwatch.stop()
     val timeTaken = stopwatch.getTime
     println(timeTaken)
+
     /*DATE TYPE VALIDATION*/
     //val validatedDataDf: DataFrame = dataTypeValidation(clickStreamDataDf, columnToBeValidated_Date, formatYouWantIn_Date, castTo)
 

@@ -7,6 +7,23 @@ import com.igniteplus.data.pipeline.service.FileWriterService.writeFile
 
 object Cleanser {
 
+  /**
+   * CHECKS FOR NULL VALUES IN PRIMARY KEY COLUMNS AND REMOVES THEM
+   * @param df
+   * @param primaryKeyColumns of a particular given data
+   * @return A dataframe with removed null values from primary key columns
+   */
+
+  def nullValueCheck(df: DataFrame,primaryKeyColumns :Seq[String]) : DataFrame = {
+    val primaryKeyColumnsAsColumnDataType : Seq[Column] = primaryKeyColumns.map(x => col(x))
+    val condition : Column = primaryKeyColumnsAsColumnDataType.map(x => x.isNull).reduce(_||_)
+    val nullFlag : DataFrame = df.withColumn("nullFlag",when(condition,"true").otherwise("false"))
+    nullFlag.show()
+    nullFlag
+  }
+
+
+
   /*FUNCTION TO REMOVE DUPLICATES*/
   def deDuplication(df:DataFrame,toOrderBy:String,filterExp:String,refColumn:String,colNames : String*): DataFrame = {
       val winSpec = Window.partitionBy(colNames.head, colNames.tail:_*)
@@ -59,12 +76,6 @@ object Cleanser {
 //    writeFile(nullDf,fileType,filePath)
 //  }
 
-  def nullValueCheck(df: DataFrame,primaryKeyColumns :Seq[String]) : DataFrame = {
-    val primaryKeyColumnsAsColumnDataType : Seq[Column] = primaryKeyColumns.map(x => col(x))
-    val condition : Column = primaryKeyColumnsAsColumnDataType.map(x => x.isNull).reduce(_||_)
-    val nullFlag : DataFrame = df.withColumn("nullFlag",when(condition,"true").otherwise("false"))
-    nullFlag.show()
-    nullFlag
-  }
+
 
 }
