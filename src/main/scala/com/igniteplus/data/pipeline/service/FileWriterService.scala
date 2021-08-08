@@ -2,8 +2,11 @@ package com.igniteplus.data.pipeline.service
 
 import com.igniteplus.data.pipeline.exception.FileWriteException
 import org.apache.spark.sql.DataFrame
+import java.text.SimpleDateFormat
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
-import java.io.PrintWriter
+import java.io.{BufferedWriter, FileWriter, PrintWriter}
 
 object FileWriterService {
 
@@ -21,15 +24,12 @@ object FileWriterService {
     }
   }
 
-  def writeExceptions(exception : String, fileType : String, filePath : String) = {
-    new PrintWriter(filePath)
-    {
-      write(exception)
-      close
-    }
+  def writeExceptions(exception : String, filePath : String) = {
+
+      val timeStamp = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss").format(Calendar.getInstance.getTime)
+      val out = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)))
+      out.println(timeStamp+" "+exception)
+      out.close()
+
   }
-
-
-
-
 }

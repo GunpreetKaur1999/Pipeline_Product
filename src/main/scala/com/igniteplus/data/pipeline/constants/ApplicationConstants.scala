@@ -13,7 +13,7 @@ object ApplicationConstants {
   val FILE_TYPE:String = "csv"
 
   //LOCATIONS
-  val INPUT_LOCATION_CLICKSTREAM:String = "data/Input/clickstream/clickstream.csv"
+  val INPUT_LOCATION_CLICKSTREAM:String = "data/Input/clickstream/clickstream_log.csv"
   val INPUT_LOCATION_ITEM:String = "data/Input/item/item_data.csv"
   val NULL_VALUES_PATH:String = "data/Input/null-values/null_values.csv"
 

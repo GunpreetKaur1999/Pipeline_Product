@@ -19,7 +19,7 @@ object DataPipeline {
      catch {
        case fr: FileReadException =>
          logError("File Reader exception " + fr)
-         writeExceptions("File Reader exception " + fr,"txt","data/Output/pipeline-failures/exceptions")
+         writeExceptions("File Reader exception " + fr,"data/Output/pipeline-failures/exceptions.txt")
 
        case fw: FileWriteException =>
          println("File Writter")
