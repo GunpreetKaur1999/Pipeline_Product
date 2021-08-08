@@ -1,21 +1,25 @@
 package com.igniteplus.data.pipeline
 import com.igniteplus.data.pipeline.exception.{FileReadException, FileWriteException}
 import com.igniteplus.data.pipeline.service.PipelineService
-import org.apache.log4j.Logger
+import com.igniteplus.data.pipeline.service.FileWriterService.{writeExceptions, writeFile}
+import com.sun.corba.se.impl.activation.ServerMain.logError
+import com.sun.org.slf4j.internal
+import com.sun.org.slf4j.internal.LoggerFactory
+import org.apache.spark.internal._
 
 object DataPipeline {
 
-  @transient lazy val logger : Logger = Logger.getLogger(getClass.getName)
+  val logger :internal.Logger = LoggerFactory.getLogger(this.getClass)
 
   def main(args: Array[String]): Unit = {
-    logger.info("Starting")
+
      try {
        PipelineService.pipelineService()
      }
-
      catch {
        case fr: FileReadException =>
-         println("File Reader")
+         logError("File Reader exception " + fr)
+         writeExceptions("File Reader exception " + fr,"txt","data/Output/pipeline-failures/exceptions")
 
        case fw: FileWriteException =>
          println("File Writter")
@@ -23,6 +27,6 @@ object DataPipeline {
        case e: Exception =>
          println("Unknown exception")
      }
-    logger.info("Ending")
-   }
+
+  }
 }

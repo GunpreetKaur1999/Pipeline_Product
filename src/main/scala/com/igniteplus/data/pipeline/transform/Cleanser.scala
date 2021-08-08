@@ -9,17 +9,17 @@ object Cleanser {
 
   /**
    * CHECKS FOR NULL VALUES IN PRIMARY KEY COLUMNS AND REMOVES THEM
-   * @param df to check and remove null values in
+   * @param inputDF to check and remove null values in
    * @param primaryKeyColumns of a particular given data
    * @return A dataframe with removed null values from primary key columns
    */
 
-  def nullValueCheck(df: DataFrame,primaryKeyColumns :Seq[String]) : DataFrame = {
+  def nullValueCheck(inputDF: DataFrame, primaryKeyColumns :Seq[String]) : DataFrame = {
     val primaryKeyColumnsAsColumnDataType : Seq[Column] = primaryKeyColumns.map(x => col(x))
     val condition : Column = primaryKeyColumnsAsColumnDataType.map(x => x.isNull).reduce(_||_)
-    val nullFlag : DataFrame = df.withColumn("nullFlag",when(condition,"true").otherwise("false"))
-    nullFlag.show()
-    nullFlag
+    val nullFlag : DataFrame = inputDF.withColumn("nullFlag",when(condition,"true").otherwise("false"))
+    val notNullDF : DataFrame = nullFlag.filter("nullFlag==true")
+    notNullDF
   }
 
 
@@ -34,18 +34,18 @@ object Cleanser {
         duplicate
      }
 
-//def deDuplication(df : DataFrame, orderBy : String, colNames : String*) : DataFrame =
+//def deDuplication(inputDF : DataFrame, orderBy : String, colNames : String*) : DataFrame =
 //{
 //if(orderBy == "nil")
 //{
-//val deDuplicate : DataFrame = df.dropDuplicates(colNames.head, colNames.tail:_*)
+//val deDuplicate : DataFrame = inputDF.dropDuplicates(colNames.head, colNames.tail:_*)
 //deDuplicate
 //}
 //else
 //{
 //val winSpec = Window.partitionBy(colNames: _*)
 //.orderBy(desc(orderBy))
-//val deDuplicate : DataFrame = df.withColumn("row_number", row_number().over(winSpec))
+//val deDuplicate : DataFrame = inputDF.withColumn("row_number", row_number().over(winSpec))
 //.filter("row_number==1")
 //.drop("row_number")
 //deDuplicate
@@ -59,19 +59,19 @@ object Cleanser {
   }
 
   /*FUNCTION TO CHECK NULL VALUES AND WRITE IT TO A FILE*/
-//  def nullValuesCheckAndRemove(df:DataFrame,columnName:Seq[String],fileType:String,filePath:String) = {
-//    var notNullDf:DataFrame=df
+//  def nullValuesCheckAndRemove(inputDF:DataFrame,columnName:Seq[String],fileType:String,filePath:String) = {
+//    var notNullDf:DataFrame=inputDF
 //    for (columnName <- columnName) {
-//      notNullDf = df.filter(df(columnName).isNotNull)
+//      notNullDf = inputDF.filter(inputDF(columnName).isNotNull)
 //    }
 //    notNullDf
 //  }
 //
 //  /*WRITE NULL VALUES TO A FILE*/
-//  def writeNullValues(df:DataFrame,columnName:Seq[String],fileType:String,filePath:String) = {
-//    var nullDf:DataFrame=df
+//  def writeNullValues(inputDF:DataFrame,columnName:Seq[String],fileType:String,filePath:String) = {
+//    var nullDf:DataFrame=inputDF
 //    for (columnName <- columnName) {
-//      nullDf = df.filter(df(columnName).isNull)
+//      nullDf = inputDF.filter(inputDF(columnName).isNull)
 //    }
 //    writeFile(nullDf,fileType,filePath)
 //  }

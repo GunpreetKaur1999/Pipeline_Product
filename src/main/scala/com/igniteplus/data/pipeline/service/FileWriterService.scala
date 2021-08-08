@@ -3,7 +3,10 @@ package com.igniteplus.data.pipeline.service
 import com.igniteplus.data.pipeline.exception.FileWriteException
 import org.apache.spark.sql.DataFrame
 
+import java.io.PrintWriter
+
 object FileWriterService {
+
   def writeFile(df:DataFrame,fileType:String,filePath:String) = {
     try {
       df.write
@@ -14,7 +17,19 @@ object FileWriterService {
     }
     catch {
       case e: Exception =>
-        FileWriteException("unable to write files in the given location " )
+        FileWriteException("Error with writing the files to the specified location." )
     }
   }
+
+  def writeExceptions(exception : String, fileType : String, filePath : String) = {
+    new PrintWriter(filePath)
+    {
+      write(exception)
+      close
+    }
+  }
+
+
+
+
 }
