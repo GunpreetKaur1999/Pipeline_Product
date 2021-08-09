@@ -21,14 +21,18 @@ object PipelineService {
 
     /*READING OF CLICK-STREAM DATA*/
     val clickStreamDataDf : DataFrame = readFile(INPUT_LOCATION_CLICKSTREAM, FILE_TYPE)
-
     /*READING OF ITEM DATA*/
     val itemDataDf : DataFrame = readFile(INPUT_LOCATION_ITEM, FILE_TYPE)
+
     val stopwatch: StopWatch = new StopWatch
     stopwatch.start()
     /*NULL VALUE CHECKING*/
     val nullValueCheckInClickStreamDf : DataFrame = nullValueCheckAndRemove(clickStreamDataDf,PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA)
     val nullValueCheckInItemDf : DataFrame = nullValueCheckAndRemove(itemDataDf,PRIMARY_KEY_COLUMNS_ITEM_DATA)
+
+
+
+
 
 
 

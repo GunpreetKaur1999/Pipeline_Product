@@ -4,8 +4,9 @@ package com.igniteplus.data.pipeline.constants
 import com.igniteplus.data.pipeline.util.ApplicationUtil.{createSparkSession, getSparkConf}
 
 object ApplicationConstants {
-  val SPARK_CONF_FILE_NAME = "spark.conf"
+
   //SPARK SESSION
+  val SPARK_CONF_FILE_NAME = "spark.conf"
   val SPARK_CONF = getSparkConf(SPARK_CONF_FILE_NAME)
   implicit val spark = createSparkSession(SPARK_CONF)
 
@@ -13,12 +14,21 @@ object ApplicationConstants {
   val FILE_TYPE:String = "csv"
 
   //LOCATIONS
-  val INPUT_LOCATION_CLICKSTREAM:String = "data/Input/clickstream/clickstream.csv"
+  val INPUT_LOCATION_CLICKSTREAM:String = "data/Input/clickstream/clickstream_log.csv"
   val INPUT_LOCATION_ITEM:String = "data/Input/item/item_data.csv"
   val NULL_VALUES_PATH:String = "data/Input/null-values/null_values.csv"
   val FILE_PATH_TO_WRITE_EXCEPTIONS = "data/Output/pipeline-failures/exceptions.txt"
 
   //PARAMETERS TO FUNCTIONS
+  //PARAMETERS FOR NULL_VALUES_CHECK_AND_REMOVE
+  val PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA = Seq("session_id","item_id")
+  val PRIMARY_KEY_COLUMNS_ITEM_DATA = Seq("item_id")
+
+
+
+
+
+
 
   //PARAMETERS FOR VALIDATED DATA
   val columnToBeValidated_Date:String = "event_timestamp"
@@ -45,8 +55,6 @@ object ApplicationConstants {
   //WRITER
   val FILE_TYPE_WRITE= "csv"
 
-  //PARAMETERS FOR NULL_VALUES_CHECK_AND_REMOVE
-  val PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA = Seq("session_id","item_id")
-  val PRIMARY_KEY_COLUMNS_ITEM_DATA = Seq("item_id")
+
 
 }
