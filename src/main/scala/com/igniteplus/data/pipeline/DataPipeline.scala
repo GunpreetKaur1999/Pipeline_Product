@@ -1,4 +1,5 @@
 package com.igniteplus.data.pipeline
+import com.igniteplus.data.pipeline.constants.ApplicationConstants.FILE_PATH_TO_WRITE_EXCEPTIONS
 import com.igniteplus.data.pipeline.exception.{FileReadException, FileWriteException}
 import com.igniteplus.data.pipeline.service.PipelineService
 import com.igniteplus.data.pipeline.service.FileWriterService.writeExceptions
@@ -16,7 +17,7 @@ object DataPipeline {
      }
      catch {
        case fr: FileReadException =>
-         writeExceptions("File Reader exception " + fr,"data/Output/pipeline-failures/exceptions.txt")
+         writeExceptions("File Reader exception " + fr,FILE_PATH_TO_WRITE_EXCEPTIONS)
 
        case fw: FileWriteException =>
          logError("File Writer")

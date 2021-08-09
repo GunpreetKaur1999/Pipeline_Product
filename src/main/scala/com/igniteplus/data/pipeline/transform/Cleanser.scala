@@ -14,7 +14,7 @@ object Cleanser {
    * @return A dataframe with removed null values from primary key columns
    */
 
-  def nullValueCheck(inputDF: DataFrame, primaryKeyColumns :Seq[String]) : DataFrame = {
+  def nullValueCheckAndRemove(inputDF: DataFrame, primaryKeyColumns :Seq[String]) : DataFrame = {
     val primaryKeyColumnsAsColumnDataType : Seq[Column] = primaryKeyColumns.map(x => col(x))
     val condition : Column = primaryKeyColumnsAsColumnDataType.map(x => x.isNull).reduce(_||_)
     val nullFlag : DataFrame = inputDF.withColumn("nullFlag",when(condition,"true").otherwise("false"))

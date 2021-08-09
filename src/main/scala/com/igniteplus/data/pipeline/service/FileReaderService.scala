@@ -21,7 +21,7 @@ object FileReaderService{
          }
       catch{
         case e: Exception =>
-          logError("Unable to read files")
+          logError("Unable to read files ")
           spark.emptyDataFrame
       }
 

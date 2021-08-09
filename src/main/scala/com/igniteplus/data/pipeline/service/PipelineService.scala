@@ -2,7 +2,7 @@ package com.igniteplus.data.pipeline.service
 
 import com.igniteplus.data.pipeline.constants.ApplicationConstants.{FILE_TYPE, FILE_TYPE_WRITE, INPUT_LOCATION_CLICKSTREAM, INPUT_LOCATION_ITEM, NULL_VALUES_PATH, PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA, PRIMARY_KEY_COLUMNS_ITEM_DATA, SPARK_CONF, castTo, columnToBeModified, columnToBeNamed, columnToBeTrimmed, columnToBeValidated_Date, filterExp, formatYouWantIn_Date, refColumn, toOrderBy}
 import com.igniteplus.data.pipeline.service.FileReaderService.readFile
-import com.igniteplus.data.pipeline.transform.Cleanser.{nullValueCheck}
+import com.igniteplus.data.pipeline.transform.Cleanser.{nullValueCheckAndRemove}
 import com.igniteplus.data.pipeline.transform.TransformationOfData.{consistentNaming, dataTypeValidation}
 import com.igniteplus.data.pipeline.util.ApplicationUtil.createSparkSession
 import org.apache.commons.lang.time.StopWatch
@@ -14,8 +14,7 @@ object PipelineService {
 
   def pipelineService() = {
 
-    val stopwatch: StopWatch = new StopWatch
-    stopwatch.start()
+
 
     //IMPLICIT VALUE OF SPARK
     implicit val spark = createSparkSession(SPARK_CONF)
@@ -25,10 +24,15 @@ object PipelineService {
 
     /*READING OF ITEM DATA*/
     val itemDataDf : DataFrame = readFile(INPUT_LOCATION_ITEM, FILE_TYPE)
-
+    val stopwatch: StopWatch = new StopWatch
+    stopwatch.start()
     /*NULL VALUE CHECKING*/
-    val nullValueCheckInClickStreamDf : DataFrame = nullValueCheck(clickStreamDataDf,PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA)
-    val nullValueCheckInItemDf : DataFrame = nullValueCheck(itemDataDf,PRIMARY_KEY_COLUMNS_ITEM_DATA)
+    val nullValueCheckInClickStreamDf : DataFrame = nullValueCheckAndRemove(clickStreamDataDf,PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA)
+    val nullValueCheckInItemDf : DataFrame = nullValueCheckAndRemove(itemDataDf,PRIMARY_KEY_COLUMNS_ITEM_DATA)
+
+
+
+
 
 
  /*   /*DATE TYPE VALIDATION*/
