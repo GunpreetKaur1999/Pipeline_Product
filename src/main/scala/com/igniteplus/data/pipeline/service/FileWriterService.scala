@@ -15,12 +15,12 @@ object FileWriterService {
    * @param filePath to which we have to write the exceptions
    */
   def writeExceptions(exception : String, filePath : String) = {
+      val timeStamp = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss").format(Calendar.getInstance.getTime)
+      val out = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)))
+      out.println(timeStamp + " " + exception)
+      out.close()
+    }
 
-    val timeStamp = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss").format(Calendar.getInstance.getTime)
-    val out = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)))
-    out.println(timeStamp+" "+exception)
-    out.close()
-  }
 
 
 

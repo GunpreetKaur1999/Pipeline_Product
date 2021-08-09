@@ -6,12 +6,15 @@ import com.igniteplus.data.pipeline.service.FileWriterService.writeExceptions
 import com.sun.corba.se.impl.activation.ServerMain.logError
 import com.sun.org.slf4j.internal
 import com.sun.org.slf4j.internal.LoggerFactory
+import org.apache.commons.lang.time.StopWatch
 
 
 object DataPipeline {
 
   val logger :internal.Logger = LoggerFactory.getLogger(this.getClass)
   def main(args: Array[String]): Unit = {
+    val stopwatch: StopWatch = new StopWatch
+    stopwatch.start()
     try {
        PipelineService.pipelineService()
      }
@@ -25,5 +28,8 @@ object DataPipeline {
        case e: Exception =>
          logError("Unknown exception")
      }
+    stopwatch.stop()
+    val timeTaken = stopwatch.getTime
+    //println(timeTaken)
   }
 }
