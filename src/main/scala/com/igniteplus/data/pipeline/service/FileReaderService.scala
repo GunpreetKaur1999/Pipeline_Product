@@ -2,6 +2,7 @@ package com.igniteplus.data.pipeline.service
 import com.igniteplus.data.pipeline.exception.FileReadException
 import com.sun.corba.se.impl.activation.ServerMain.logError
 import org.apache.spark.sql.{DataFrame, SparkSession}
+import com.igniteplus.data.pipeline.service.FileWriterService.writeFile
 
 
 object FileReaderService{
@@ -15,7 +16,7 @@ object FileReaderService{
    */
 
   def readFile(path:String, fileFormat:String)(implicit spark:SparkSession): DataFrame = {
-    val fileDf: DataFrame =
+    val fileDf: DataFrame = {
       try{
           spark.read.format(fileFormat).option("header", "true").option("inferSchema", "true").load(path)
          }
@@ -25,7 +26,10 @@ object FileReaderService{
           spark.emptyDataFrame
       }
 
-      val dfDataCount: Long = fileDf.count()
+    }
+    writeFile(fileDf,"csv","output/merged-data/readFile.csv")
+
+    val dfDataCount: Long = fileDf.count()
       if(dfDataCount == 0) {
         throw FileReadException("No files read from the file reader ")
     }

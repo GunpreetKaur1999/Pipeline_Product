@@ -20,6 +20,7 @@ object Cleanser {
     val nullFlag : DataFrame = inputDF.withColumn("nullFlag",when(condition,"true").otherwise("false"))
     val notNullDF : DataFrame = nullFlag.filter("nullFlag==false")
     val notNullDf : DataFrame = notNullDF.drop("nullFlag")
+    writeFile(notNullDf,"csv","output/merged-data/notNull.csv")
     notNullDf
   }
 
