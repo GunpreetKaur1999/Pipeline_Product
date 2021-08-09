@@ -18,13 +18,14 @@ object Cleanser {
     val primaryKeyColumnsAsColumnDataType : Seq[Column] = primaryKeyColumns.map(x => col(x))
     val condition : Column = primaryKeyColumnsAsColumnDataType.map(x => x.isNull).reduce(_||_)
     val nullFlag : DataFrame = inputDF.withColumn("nullFlag",when(condition,"true").otherwise("false"))
-    val notNullDF : DataFrame = nullFlag.filter("nullFlag==true")
-    notNullDF
+    val notNullDF : DataFrame = nullFlag.filter("nullFlag==false")
+    val notNullDf : DataFrame = notNullDF.drop("nullFlag")
+    notNullDf
   }
 
 
 
-  /*FUNCTION TO REMOVE DUPLICATES*/
+/*  /*FUNCTION TO REMOVE DUPLICATES*/
   def deDuplication(df:DataFrame,toOrderBy:String,filterExp:String,refColumn:String,colNames : String*): DataFrame = {
       val winSpec = Window.partitionBy(colNames.head, colNames.tail:_*)
           .orderBy(desc(toOrderBy))
@@ -77,5 +78,5 @@ object Cleanser {
 //  }
 
 
-
+*/
 }
