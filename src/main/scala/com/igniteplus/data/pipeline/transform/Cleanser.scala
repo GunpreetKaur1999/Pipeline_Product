@@ -19,8 +19,10 @@ object Cleanser {
     val condition : Column = primaryKeyColumnsAsColumnDataType.map(x => x.isNull).reduce(_||_)
     val nullFlag : DataFrame = inputDF.withColumn("nullFlag",when(condition,"true").otherwise("false"))
     val notNullDF : DataFrame = nullFlag.filter("nullFlag==false")
+    val nullDF : DataFrame = nullFlag.filter("nullFlag==true")
     val notNullDf : DataFrame = notNullDF.drop("nullFlag")
-    writeFile(notNullDf,"csv","output/merged-data/notNull.csv")
+    writeFile(notNullDf,"csv","data/Output/merged-data/notNull.csv")
+    writeFile(nullDF,"csv","data/Output/merged-data/null.csv")
     notNullDf
   }
 

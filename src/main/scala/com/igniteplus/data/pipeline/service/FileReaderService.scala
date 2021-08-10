@@ -15,7 +15,7 @@ object FileReaderService{
    * @return is successful a dataframe with data else empty dataframe
    */
 
-  def readFile(path:String, fileFormat:String)(implicit spark:SparkSession): DataFrame = {
+  def readFile(path:String, fileFormat:String, writeOutputToPath:String)(implicit spark:SparkSession): DataFrame = {
     val fileDf: DataFrame = {
       try{
           spark.read.format(fileFormat).option("header", "true").option("inferSchema", "true").load(path)
@@ -27,12 +27,13 @@ object FileReaderService{
       }
 
     }
-    writeFile(fileDf,"csv","output/merged-data/readFile.csv")
 
     val dfDataCount: Long = fileDf.count()
       if(dfDataCount == 0) {
         throw FileReadException("No files read from the file reader ")
     }
+
+    writeFile(fileDf,fileFormat,writeOutputToPath)
     fileDf
   }
 }

@@ -12,6 +12,7 @@ object ApplicationConstants {
 
   //READ
   val FILE_TYPE:String = "csv"
+  val WRITE_OUTPUT_TO_PATH:String="data/Output/merged-data/readFileOutput.csv"
 
   //LOCATIONS
   val INPUT_LOCATION_CLICKSTREAM:String = "data/Input/clickstream/clickstream_log.csv"

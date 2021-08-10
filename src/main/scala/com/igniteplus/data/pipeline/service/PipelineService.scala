@@ -1,8 +1,8 @@
 package com.igniteplus.data.pipeline.service
 
-import com.igniteplus.data.pipeline.constants.ApplicationConstants.{FILE_TYPE, FILE_TYPE_WRITE, INPUT_LOCATION_CLICKSTREAM, INPUT_LOCATION_ITEM, NULL_VALUES_PATH, PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA, PRIMARY_KEY_COLUMNS_ITEM_DATA, SPARK_CONF, castTo, columnToBeModified, columnToBeNamed, columnToBeTrimmed, columnToBeValidated_Date, filterExp, formatYouWantIn_Date, refColumn, toOrderBy}
+import com.igniteplus.data.pipeline.constants.ApplicationConstants.{FILE_TYPE, FILE_TYPE_WRITE, INPUT_LOCATION_CLICKSTREAM, INPUT_LOCATION_ITEM, NULL_VALUES_PATH, PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA, PRIMARY_KEY_COLUMNS_ITEM_DATA, SPARK_CONF, WRITE_OUTPUT_TO_PATH, castTo, columnToBeModified, columnToBeNamed, columnToBeTrimmed, columnToBeValidated_Date, filterExp, formatYouWantIn_Date, refColumn, toOrderBy}
 import com.igniteplus.data.pipeline.service.FileReaderService.readFile
-import com.igniteplus.data.pipeline.transform.Cleanser.{nullValueCheckAndRemove}
+import com.igniteplus.data.pipeline.transform.Cleanser.nullValueCheckAndRemove
 import com.igniteplus.data.pipeline.transform.TransformationOfData.{consistentNaming, dataTypeValidation}
 import com.igniteplus.data.pipeline.util.ApplicationUtil.createSparkSession
 import org.apache.commons.lang.time.StopWatch
@@ -18,9 +18,9 @@ object PipelineService {
     implicit val spark = createSparkSession(SPARK_CONF)
 
     /*READING OF CLICK-STREAM DATA*/
-    val clickStreamDataDf : DataFrame = readFile(INPUT_LOCATION_CLICKSTREAM, FILE_TYPE)
+    val clickStreamDataDf : DataFrame = readFile(INPUT_LOCATION_CLICKSTREAM, FILE_TYPE, WRITE_OUTPUT_TO_PATH)
     /*READING OF ITEM DATA*/
-    val itemDataDf : DataFrame = readFile(INPUT_LOCATION_ITEM, FILE_TYPE)
+    val itemDataDf : DataFrame = readFile(INPUT_LOCATION_ITEM, FILE_TYPE, WRITE_OUTPUT_TO_PATH)
 
 
     /*NULL VALUE CHECKING*/
