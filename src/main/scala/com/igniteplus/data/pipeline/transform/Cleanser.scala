@@ -35,27 +35,27 @@ object Cleanser {
    * @param toOrderBy
    * @param writeOutputInFormat
    * @param writeOutputToPath
-   * @return a dataframe without duplicates and the latest value in case a duplicate was found
+   * @return a dataframe without duplicates and the latest value in case a deDuplicate was found
    */
 
   def deDuplication(inputDF:DataFrame, filterExp:String, refColumn:String, colNames : Seq[String], toOrderBy : Option[String], writeOutputInFormat : String, writeOutputToPath : String): DataFrame = {
-      val winSpec =
+
         toOrderBy match {
-          case Some(x) =>  Window.partitionBy(colNames.head, colNames.tail:_*).orderBy(x)
+          case Some(x) => {val winSpec = Window.partitionBy(colNames.head, colNames.tail:_*).orderBy(x)
+                          val deDuplicate = inputDF.withColumn(refColumn, row_number().over(winSpec))
+                                                  .filter(filterExp)
+                                                  .drop(refColumn)
+                           writeFile(deDuplicate,writeOutputInFormat,writeOutputToPath)
+                          deDuplicate}
+          case _ =>       {
+                          val deDuplicate = inputDF.dropDuplicates(colNames.head, colNames.tail:_*)
+                          writeFile(deDuplicate,writeOutputInFormat,writeOutputToPath)
+                          deDuplicate
+                          }
+                      }
 
-          case _ =>  Window.partitionBy(colNames.head, colNames.tail:_*)
-        }
-      val duplicate: DataFrame =
-        toOrderBy match {
-          case Some(x) =>  inputDF.withColumn(refColumn, row_number().over(winSpec))
-                          .filter(filterExp)
-                          .drop(refColumn)
 
-          case _ =>  inputDF.dropDuplicates(colNames.head, colNames.tail:_*)
-        }
 
-      writeFile(duplicate,writeOutputInFormat,writeOutputToPath)
-        duplicate
      }
 
 /*//def deDuplication(inputDF : DataFrame, orderBy : String, colNames : String*) : DataFrame =
