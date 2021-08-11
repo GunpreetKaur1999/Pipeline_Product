@@ -21,6 +21,13 @@ object FileWriterService {
       out.close()
     }
 
+  /**
+   * WRITE FUNCTION
+   * @param df
+   * @param fileType
+   * @param filePath
+   * @return Just writes the file at the desired location in a desired format specified in params
+   */
 
   def writeFile(df:DataFrame,fileType:String,filePath:String) = {
     try {
