@@ -42,11 +42,19 @@ object Cleanser {
       val winSpec =
         toOrderBy match {
           case Some(x) =>  Window.partitionBy(colNames.head, colNames.tail:_*).orderBy(x)
+
           case _ =>  Window.partitionBy(colNames.head, colNames.tail:_*)
         }
-      val duplicate: DataFrame = inputDF.withColumn(refColumn, row_number().over(winSpec))
-          .filter(filterExp)
-          .drop(refColumn)
+      val duplicate: DataFrame =
+        toOrderBy match {
+          case Some(x) =>  inputDF.withColumn(refColumn, row_number().over(winSpec))
+                          .filter(filterExp)
+                          .drop(refColumn)
+
+          case _ =>  inputDF.withColumn(refColumn, row_number().over(winSpec))
+                     .drop(refColumn)
+        }
+
       writeFile(duplicate,writeOutputInFormat,writeOutputToPath)
         duplicate
      }

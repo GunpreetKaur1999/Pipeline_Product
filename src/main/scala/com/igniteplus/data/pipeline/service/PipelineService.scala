@@ -1,6 +1,7 @@
 package com.igniteplus.data.pipeline.service
 
 import com.igniteplus.data.pipeline.DataPipeline.logger
+import com.igniteplus.data.pipeline.constants.ApplicationConstants
 import com.igniteplus.data.pipeline.constants.ApplicationConstants._
 import com.igniteplus.data.pipeline.service.FileReaderService.readFile
 import com.igniteplus.data.pipeline.transform.Cleanser._
@@ -19,18 +20,18 @@ object PipelineService {
     implicit val spark = createSparkSession(SPARK_CONF)
 
     /*READING OF CLICK-STREAM DATA*/
-    val clickStreamDataDf : DataFrame = readFile(INPUT_LOCATION_CLICKSTREAM, FILE_TYPE, WRITE_OUTPUT_TO_PATH)
+    val clickStreamDataDf : DataFrame = readFile(INPUT_LOCATION_CLICKSTREAM, FILE_TYPE, WRITE_OUTPUT_TO_PATH_CLICKSTREAM)
     /*READING OF ITEM DATA*/
-    val itemDataDf : DataFrame = readFile(INPUT_LOCATION_ITEM, FILE_TYPE, WRITE_OUTPUT_TO_PATH)
+    val itemDataDf : DataFrame = readFile(INPUT_LOCATION_ITEM, FILE_TYPE, WRITE_OUTPUT_TO_PATH_ITEM)
 
 
     /*NULL VALUE CHECKING*/
-    val nullValueCheckInClickStreamDf : DataFrame = nullValueCheckAndRemove(clickStreamDataDf,PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA,WRITE_OUTPUT_FORMAT,WRITE_OUTPUT_TO_PATH_NOT_NULL,WRITE_OUTPUT_TO_PATH_NULL)
-    val nullValueCheckInItemDf : DataFrame = nullValueCheckAndRemove(itemDataDf,PRIMARY_KEY_COLUMNS_ITEM_DATA,WRITE_OUTPUT_FORMAT,WRITE_OUTPUT_TO_PATH_NOT_NULL,WRITE_OUTPUT_TO_PATH_NULL)
+    val nullValueCheckInClickStreamDf : DataFrame = nullValueCheckAndRemove(clickStreamDataDf,PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA,WRITE_OUTPUT_FORMAT,WRITE_OUTPUT_TO_PATH_NOT_NULL_CLICKSTREAM,WRITE_OUTPUT_TO_PATH_NULL_CLICKSTREAM)
+    val nullValueCheckInItemDf : DataFrame = nullValueCheckAndRemove(itemDataDf,PRIMARY_KEY_COLUMNS_ITEM_DATA,WRITE_OUTPUT_FORMAT,WRITE_OUTPUT_TO_PATH_NOT_NULL_ITEM,WRITE_OUTPUT_TO_PATH_NULL_ITEM)
 
     /*REMOVAL OF DEDUPLICATED DATA*/
-    val deDuplicatedDf: DataFrame = deDuplication(nullValueCheckInClickStreamDf, filterExp, refColumn, PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA,toOrderBy,WRITE_OUTPUT_FORMAT,WRITE_OUTPUT_TO_PATH_DEDUPLICATED_DATA)
-    //val deDuplicatedDfItemDF: DataFrame = deDuplication(nullValueCheckInItemDf, filterExp, refColumn, PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA,toOrderBy,WRITE_OUTPUT_FORMAT,WRITE_OUTPUT_TO_PATH_DEDUPLICATED_DATA)
+    val deDuplicatedDf: DataFrame = deDuplication(nullValueCheckInClickStreamDf, filterExp, refColumn, PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA,toOrderBy,WRITE_OUTPUT_FORMAT,WRITE_OUTPUT_TO_PATH_DEDUPLICATED_DATA_CLICKSTREAM)
+    val deDuplicatedDfItemDF: DataFrame = deDuplication(nullValueCheckInItemDf, filterExp, refColumn, PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA,toOrderBy,WRITE_OUTPUT_FORMAT,WRITE_OUTPUT_TO_PATH_DEDUPLICATED_DATA_ITEM)
 
 
 

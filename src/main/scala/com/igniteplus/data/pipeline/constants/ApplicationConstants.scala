@@ -12,7 +12,8 @@ object ApplicationConstants {
 
   //READ
   val FILE_TYPE:String = "csv"
-  val WRITE_OUTPUT_TO_PATH:String="data/Output/merged-data/readFileOutput.csv"
+  val WRITE_OUTPUT_TO_PATH_CLICKSTREAM : String = "data/Output/merged-data/readOutput/readOutputClickStream.csv"
+  val WRITE_OUTPUT_TO_PATH_ITEM : String = "data/Output/merged-data/readOutput/readOutputItem.csv"
 
   //LOCATIONS
   val INPUT_LOCATION_CLICKSTREAM : String = "data/Input/clickstream/clickstream_log.csv"
@@ -24,8 +25,10 @@ object ApplicationConstants {
   //PARAMETERS FOR NULL_VALUES_CHECK_AND_REMOVE
   val PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA : Seq[String] = Seq("session_id","item_id")
   val PRIMARY_KEY_COLUMNS_ITEM_DATA : Seq[String] = Seq("item_id")
-  val WRITE_OUTPUT_TO_PATH_NULL : String = "data/Output/merged-data/null.csv"
-  val WRITE_OUTPUT_TO_PATH_NOT_NULL : String = "data/Output/merged-data/notNull.csv"
+  val WRITE_OUTPUT_TO_PATH_NULL_CLICKSTREAM : String = "data/Output/merged-data/nullValues/nullValuesClickStream.csv"
+  val WRITE_OUTPUT_TO_PATH_NOT_NULL_CLICKSTREAM : String = "data/Output/merged-data/notNullValues/notNullDataClickStream.csv"
+  val WRITE_OUTPUT_TO_PATH_NOT_NULL_ITEM : String = "data/Output/merged-data/notNullValues/notNullDataItem.csv"
+  val WRITE_OUTPUT_TO_PATH_NULL_ITEM : String = "data/Output/merged-data/nullValues/nullValuesItems.csv"
 
 
   //PARAMETERS FOR DE_DUPLICATION
@@ -33,8 +36,8 @@ object ApplicationConstants {
   val refColumn : String = "rowNumber"
   val filterExp : String = "rowNumber==1"
   val WRITE_OUTPUT_FORMAT : String = "csv"
-  val WRITE_OUTPUT_TO_PATH_DEDUPLICATED_DATA : String = "data/Output/merged-data/deduplicates.csv"
-
+  val WRITE_OUTPUT_TO_PATH_DEDUPLICATED_DATA_CLICKSTREAM : String = "data/Output/merged-data/Deduplicated_Data/deduplicatedDataClickStream.csv"
+  val WRITE_OUTPUT_TO_PATH_DEDUPLICATED_DATA_ITEM : String = "data/Output/merged-data/Deduplicated_Data/deDuplicatedDataItem.csv"
 
 
 
