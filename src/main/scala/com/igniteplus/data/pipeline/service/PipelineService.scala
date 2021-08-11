@@ -31,7 +31,7 @@ object PipelineService {
 
     /*REMOVAL OF DEDUPLICATED DATA*/
     val deDuplicatedDf: DataFrame = deDuplication(nullValueCheckInClickStreamDf, filterExp, refColumn, PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA,toOrderBy,WRITE_OUTPUT_FORMAT,WRITE_OUTPUT_TO_PATH_DEDUPLICATED_DATA_CLICKSTREAM)
-    val deDuplicatedDfItemDF: DataFrame = deDuplication(nullValueCheckInItemDf, filterExp, refColumn, PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA,toOrderBy,WRITE_OUTPUT_FORMAT,WRITE_OUTPUT_TO_PATH_DEDUPLICATED_DATA_ITEM)
+    //val deDuplicatedDfItemDF: DataFrame = deDuplication(nullValueCheckInItemDf, filterExp, refColumn, PRIMARY_KEY_COLUMNS_ITEM_DATA,toOrderBy,WRITE_OUTPUT_FORMAT,WRITE_OUTPUT_TO_PATH_DEDUPLICATED_DATA_ITEM)
 
 
 

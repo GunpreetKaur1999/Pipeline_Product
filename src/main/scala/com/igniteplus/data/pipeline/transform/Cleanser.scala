@@ -51,8 +51,7 @@ object Cleanser {
                           .filter(filterExp)
                           .drop(refColumn)
 
-          case _ =>  inputDF.withColumn(refColumn, row_number().over(winSpec))
-                     .drop(refColumn)
+          case _ =>  inputDF.dropDuplicates(colNames.head, colNames.tail:_*)
         }
 
       writeFile(duplicate,writeOutputInFormat,writeOutputToPath)
