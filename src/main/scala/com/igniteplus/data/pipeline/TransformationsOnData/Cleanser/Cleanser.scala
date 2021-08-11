@@ -9,7 +9,6 @@ object Cleanser {
 
   /**
    * CHECKS FOR NULL VALUES IN PRIMARY KEY COLUMNS AND REMOVES THEM
-   *
    * @param inputDF           to check and remove null values in
    * @param primaryKeyColumns of a particular given data
    * @return A dataframe with removed null values from primary key columns
