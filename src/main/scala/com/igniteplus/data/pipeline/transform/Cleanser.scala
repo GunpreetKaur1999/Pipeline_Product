@@ -41,22 +41,21 @@ object Cleanser {
   def deDuplication(inputDF:DataFrame, filterExp:String, refColumn:String, colNames : Seq[String], toOrderBy : Option[String], writeOutputInFormat : String, writeOutputToPath : String): DataFrame = {
 
         toOrderBy match {
-          case Some(x) => {val winSpec = Window.partitionBy(colNames.head, colNames.tail:_*).orderBy(x)
-                          val deDuplicate = inputDF.withColumn(refColumn, row_number().over(winSpec))
-                                                  .filter(filterExp)
-                                                  .drop(refColumn)
-                           writeFile(deDuplicate,writeOutputInFormat,writeOutputToPath)
-                          deDuplicate}
+          case Some(x) => {
+                              val winSpec = Window.partitionBy(colNames.head, colNames.tail:_*).orderBy(x)
+                              val deDuplicate = inputDF.withColumn(refColumn, row_number().over(winSpec))
+                                                      .filter(filterExp)
+                                                      .drop(refColumn)
+                              writeFile(deDuplicate,writeOutputInFormat,writeOutputToPath)
+                              deDuplicate
+                          }
           case _ =>       {
-                          val deDuplicate = inputDF.dropDuplicates(colNames.head, colNames.tail:_*)
-                          writeFile(deDuplicate,writeOutputInFormat,writeOutputToPath)
-                          deDuplicate
+                              val deDuplicate = inputDF.dropDuplicates(colNames.head, colNames.tail:_*)
+                              writeFile(deDuplicate,writeOutputInFormat,writeOutputToPath)
+                              deDuplicate
                           }
                       }
-
-
-
-     }
+            }
 
 /*//def deDuplication(inputDF : DataFrame, orderBy : String, colNames : String*) : DataFrame =
 //{
