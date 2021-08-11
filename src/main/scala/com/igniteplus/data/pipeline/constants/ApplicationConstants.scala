@@ -47,7 +47,7 @@ object ApplicationConstants {
  // val SEQ_CLICKSTREAM_PRIMARY_KEYS:Seq[String] = Seq("session_id","item_id")
   //val SEQ_ITEM_PRIMARY_KEYS:Seq[String] = Seq("item_id")
 
-  val toOrderBy:String = "event_timestamp"
+  val toOrderBy : Option[String] = Some("event_timestamp")
   val refColumn:String = "rowNumber"
   val filterExp:String = "rowNumber==1"
   //val toPartitionBy:Seq[String] = SEQ_CLICKSTREAM_PRIMARY_KEYS

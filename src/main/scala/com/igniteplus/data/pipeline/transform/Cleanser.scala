@@ -26,31 +26,21 @@ object Cleanser {
     notNullDf
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*  /*FUNCTION TO REMOVE DUPLICATES*/
-  def deDuplication(df:DataFrame,toOrderBy:String,filterExp:String,refColumn:String,colNames : String*): DataFrame = {
-      val winSpec = Window.partitionBy(colNames.head, colNames.tail:_*)
-          .orderBy(desc(toOrderBy))
-        val duplicate: DataFrame = df.withColumn(refColumn, row_number().over(winSpec))
+  /*FUNCTION TO REMOVE DUPLICATES*/
+  def deDuplication(df:DataFrame,filterExp:String,refColumn:String,colNames : Seq[String],toOrderBy : Option[String]): DataFrame = {
+      val winSpec =
+        toOrderBy match {
+          case Some(x) =>  Window.partitionBy(colNames.head, colNames.tail:_*).orderBy(x)
+          case _ =>  Window.partitionBy(colNames.head, colNames.tail:_*)
+        }
+      val duplicate: DataFrame = df.withColumn(refColumn, row_number().over(winSpec))
           .filter(filterExp)
           .drop(refColumn)
+    writeFile(duplicate,"csv","data/Output/merged-data/deduplicates.csv")
         duplicate
      }
 
-//def deDuplication(inputDF : DataFrame, orderBy : String, colNames : String*) : DataFrame =
+/*//def deDuplication(inputDF : DataFrame, orderBy : String, colNames : String*) : DataFrame =
 //{
 //if(orderBy == "nil")
 //{

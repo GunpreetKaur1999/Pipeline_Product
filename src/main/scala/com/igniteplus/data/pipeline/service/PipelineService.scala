@@ -1,8 +1,9 @@
 package com.igniteplus.data.pipeline.service
 
-import com.igniteplus.data.pipeline.constants.ApplicationConstants.{FILE_TYPE, FILE_TYPE_WRITE, INPUT_LOCATION_CLICKSTREAM, INPUT_LOCATION_ITEM, NULL_VALUES_PATH, PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA, PRIMARY_KEY_COLUMNS_ITEM_DATA, SPARK_CONF, WRITE_OUTPUT_TO_PATH, castTo, columnToBeModified, columnToBeNamed, columnToBeTrimmed, columnToBeValidated_Date, filterExp, formatYouWantIn_Date, refColumn, toOrderBy}
+import com.igniteplus.data.pipeline.DataPipeline.logger
+import com.igniteplus.data.pipeline.constants.ApplicationConstants._
 import com.igniteplus.data.pipeline.service.FileReaderService.readFile
-import com.igniteplus.data.pipeline.transform.Cleanser.nullValueCheckAndRemove
+import com.igniteplus.data.pipeline.transform.Cleanser._
 import com.igniteplus.data.pipeline.transform.TransformationOfData.{consistentNaming, dataTypeValidation}
 import com.igniteplus.data.pipeline.util.ApplicationUtil.createSparkSession
 import org.apache.commons.lang.time.StopWatch
@@ -27,7 +28,9 @@ object PipelineService {
     val nullValueCheckInClickStreamDf : DataFrame = nullValueCheckAndRemove(clickStreamDataDf,PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA)
     val nullValueCheckInItemDf : DataFrame = nullValueCheckAndRemove(itemDataDf,PRIMARY_KEY_COLUMNS_ITEM_DATA)
 
-
+    /*REMOVAL OF DEDUPLICATED DATA*/
+    val deDuplicatedDf: DataFrame = deDuplication(nullValueCheckInClickStreamDf, filterExp, refColumn, PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA,toOrderBy)
+    deDuplicatedDf.show()
 
 
 
@@ -45,8 +48,7 @@ object PipelineService {
     val nullValuesRemovedItemDf: DataFrame = nullValuesCheckAndRemove(itemDataDf, item_columns_check_NULL, FILE_TYPE_WRITE, NULL_VALUES_PATH)
 
 
-    /*REMOVAL OF DEDUPLICATED DATA*/
-    val deDuplicatedDf: DataFrame = deDuplication(validatedDataDf, toOrderBy, filterExp, refColumn, SEQ_CLICKSTREAM_PRIMARY_KEYS: _*)
+
 
 
     /*CONSISTENT NAMES*/
@@ -55,5 +57,9 @@ object PipelineService {
 
     /*TRIMMING OF SPACES*/
     val trimmedDataDf: DataFrame = trimFunction(consistentNamesDf, columnToBeTrimmed) */
+    //    val repartition : DataFrame = nullValueCheckInClickStreamDf.repartition(4)
+    //    val countDF = repartition.groupBy("redirection_source").count()
+    //    println(countDF.collect().mkString("->"))
+    //    scala.io.StdIn.readLine()
   }
 }
