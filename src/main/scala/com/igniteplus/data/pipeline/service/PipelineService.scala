@@ -4,8 +4,8 @@ import com.igniteplus.data.pipeline.DataPipeline.logger
 import com.igniteplus.data.pipeline.constants.ApplicationConstants
 import com.igniteplus.data.pipeline.constants.ApplicationConstants._
 import com.igniteplus.data.pipeline.service.FileReaderService.readFile
-import com.igniteplus.data.pipeline.transform.Cleanser._
-import com.igniteplus.data.pipeline.transform.TransformationOfData.{consistentNaming, dataTypeValidation}
+import com.igniteplus.data.pipeline.TransformationsOnData.Cleanser.Cleanser._
+import com.igniteplus.data.pipeline.TransformationsOnData.TranformingTheData.TransformationOfData.{consistentNaming, dataTypeValidation}
 import com.igniteplus.data.pipeline.util.ApplicationUtil.createSparkSession
 import org.apache.commons.lang.time.StopWatch
 import org.apache.spark.sql.DataFrame
