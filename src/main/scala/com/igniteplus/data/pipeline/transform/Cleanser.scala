@@ -14,29 +14,40 @@ object Cleanser {
    * @return A dataframe with removed null values from primary key columns
    */
 
-  def nullValueCheckAndRemove(inputDF: DataFrame, primaryKeyColumns :Seq[String]) : DataFrame = {
+  def nullValueCheckAndRemove(inputDF: DataFrame, primaryKeyColumns :Seq[String], writeOutputInFormat : String,writeOutputToPathNull : String, writeOutputToPathNotNull : String) : DataFrame = {
     val primaryKeyColumnsAsColumnDataType : Seq[Column] = primaryKeyColumns.map(x => col(x))
     val condition : Column = primaryKeyColumnsAsColumnDataType.map(x => x.isNull).reduce(_||_)
     val nullFlag : DataFrame = inputDF.withColumn("nullFlag",when(condition,"true").otherwise("false"))
     val notNullDF : DataFrame = nullFlag.filter("nullFlag==false")
     val nullDF : DataFrame = nullFlag.filter("nullFlag==true")
     val notNullDf : DataFrame = notNullDF.drop("nullFlag")
-    writeFile(notNullDf,"csv","data/Output/merged-data/notNull.csv")
-    writeFile(nullDF,"csv","data/Output/merged-data/null.csv")
+    writeFile(notNullDf,writeOutputInFormat,writeOutputToPathNotNull)
+    writeFile(nullDF,writeOutputInFormat,writeOutputToPathNull)
     notNullDf
   }
 
-  /*FUNCTION TO REMOVE DUPLICATES*/
-  def deDuplication(df:DataFrame,filterExp:String,refColumn:String,colNames : Seq[String],toOrderBy : Option[String]): DataFrame = {
+  /**
+   * TO REMOVE THE DUPLICATE DATA AND SELECT THE LASTEST WHERE IT WAS DUPLICATED
+   * @param inputDF
+   * @param filterExp
+   * @param refColumn
+   * @param colNames
+   * @param toOrderBy
+   * @param writeOutputInFormat
+   * @param writeOutputToPath
+   * @return a dataframe without duplicates and the latest value in case a duplicate was found
+   */
+
+  def deDuplication(inputDF:DataFrame, filterExp:String, refColumn:String, colNames : Seq[String], toOrderBy : Option[String], writeOutputInFormat : String, writeOutputToPath : String): DataFrame = {
       val winSpec =
         toOrderBy match {
           case Some(x) =>  Window.partitionBy(colNames.head, colNames.tail:_*).orderBy(x)
           case _ =>  Window.partitionBy(colNames.head, colNames.tail:_*)
         }
-      val duplicate: DataFrame = df.withColumn(refColumn, row_number().over(winSpec))
+      val duplicate: DataFrame = inputDF.withColumn(refColumn, row_number().over(winSpec))
           .filter(filterExp)
           .drop(refColumn)
-    writeFile(duplicate,"csv","data/Output/merged-data/deduplicates.csv")
+      writeFile(duplicate,writeOutputInFormat,writeOutputToPath)
         duplicate
      }
 
@@ -59,8 +70,8 @@ object Cleanser {
 //}
 
   /*FUCTION TO TRIM THE SPACES*/
-  def trimFunction(df:DataFrame,columnToBeTrimmed:String):DataFrame = {
-    val trimmed: DataFrame = df.withColumn(columnToBeTrimmed, trim(col(columnToBeTrimmed)))
+  def trimFunction(inputDF:DataFrame,columnToBeTrimmed:String):DataFrame = {
+    val trimmed: DataFrame = inputDF.withColumn(columnToBeTrimmed, trim(col(columnToBeTrimmed)))
     trimmed
   }
 

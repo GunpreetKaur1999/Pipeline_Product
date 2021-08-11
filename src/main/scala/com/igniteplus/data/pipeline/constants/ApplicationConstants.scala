@@ -15,16 +15,25 @@ object ApplicationConstants {
   val WRITE_OUTPUT_TO_PATH:String="data/Output/merged-data/readFileOutput.csv"
 
   //LOCATIONS
-  val INPUT_LOCATION_CLICKSTREAM:String = "data/Input/clickstream/clickstream_log.csv"
-  val INPUT_LOCATION_ITEM:String = "data/Input/item/item_data.csv"
-  val NULL_VALUES_PATH:String = "data/Input/null-values/null_values.csv"
+  val INPUT_LOCATION_CLICKSTREAM : String = "data/Input/clickstream/clickstream_log.csv"
+  val INPUT_LOCATION_ITEM : String = "data/Input/item/item_data.csv"
+  val NULL_VALUES_PATH : String = "data/Input/null-values/null_values.csv"
   val FILE_PATH_TO_WRITE_EXCEPTIONS = "data/Output/pipeline-failures/exceptions.txt"
 
   //PARAMETERS TO FUNCTIONS
   //PARAMETERS FOR NULL_VALUES_CHECK_AND_REMOVE
-  val PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA = Seq("session_id","item_id")
-  val PRIMARY_KEY_COLUMNS_ITEM_DATA = Seq("item_id")
+  val PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA : Seq[String] = Seq("session_id","item_id")
+  val PRIMARY_KEY_COLUMNS_ITEM_DATA : Seq[String] = Seq("item_id")
+  val WRITE_OUTPUT_TO_PATH_NULL : String = "data/Output/merged-data/null.csv"
+  val WRITE_OUTPUT_TO_PATH_NOT_NULL : String = "data/Output/merged-data/notNull.csv"
 
+
+  //PARAMETERS FOR DE_DUPLICATION
+  val toOrderBy : Option[String] = Some("event_timestamp")
+  val refColumn : String = "rowNumber"
+  val filterExp : String = "rowNumber==1"
+  val WRITE_OUTPUT_FORMAT : String = "csv"
+  val WRITE_OUTPUT_TO_PATH_DEDUPLICATED_DATA : String = "data/Output/merged-data/deduplicates.csv"
 
 
 
@@ -43,14 +52,6 @@ object ApplicationConstants {
   //PARAMETERS FOR TRIM_FUNCTION
   val columnToBeTrimmed:String = "event_timestamp"
 
-  //PARAMETERS FOR DE_DUPLICATION
- // val SEQ_CLICKSTREAM_PRIMARY_KEYS:Seq[String] = Seq("session_id","item_id")
-  //val SEQ_ITEM_PRIMARY_KEYS:Seq[String] = Seq("item_id")
-
-  val toOrderBy : Option[String] = Some("event_timestamp")
-  val refColumn:String = "rowNumber"
-  val filterExp:String = "rowNumber==1"
-  //val toPartitionBy:Seq[String] = SEQ_CLICKSTREAM_PRIMARY_KEYS
 
 
   //WRITER

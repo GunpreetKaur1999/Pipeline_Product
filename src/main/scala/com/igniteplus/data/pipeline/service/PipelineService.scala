@@ -25,11 +25,11 @@ object PipelineService {
 
 
     /*NULL VALUE CHECKING*/
-    val nullValueCheckInClickStreamDf : DataFrame = nullValueCheckAndRemove(clickStreamDataDf,PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA)
-    val nullValueCheckInItemDf : DataFrame = nullValueCheckAndRemove(itemDataDf,PRIMARY_KEY_COLUMNS_ITEM_DATA)
+    val nullValueCheckInClickStreamDf : DataFrame = nullValueCheckAndRemove(clickStreamDataDf,PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA,WRITE_OUTPUT_FORMAT,WRITE_OUTPUT_TO_PATH_NOT_NULL,WRITE_OUTPUT_TO_PATH_NULL)
+    //val nullValueCheckInItemDf : DataFrame = nullValueCheckAndRemove(itemDataDf,PRIMARY_KEY_COLUMNS_ITEM_DATA,)
 
     /*REMOVAL OF DEDUPLICATED DATA*/
-    val deDuplicatedDf: DataFrame = deDuplication(nullValueCheckInClickStreamDf, filterExp, refColumn, PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA,toOrderBy)
+    val deDuplicatedDf: DataFrame = deDuplication(nullValueCheckInClickStreamDf, filterExp, refColumn, PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA,toOrderBy,WRITE_OUTPUT_FORMAT,WRITE_OUTPUT_TO_PATH_DEDUPLICATED_DATA)
     deDuplicatedDf.show()
 
 

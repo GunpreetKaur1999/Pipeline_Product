@@ -22,16 +22,6 @@ object FileWriterService {
     }
 
 
-
-
-
-
-
-
-
-
-
-
   def writeFile(df:DataFrame,fileType:String,filePath:String) = {
     try {
       df.write
