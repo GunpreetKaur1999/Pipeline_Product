@@ -28,7 +28,6 @@ object Cleanser {
 
   /**
    * TO REMOVE THE DUPLICATE DATA AND SELECT THE LASTEST WHERE IT WAS DUPLICATED
-   *
    * @param inputDF
    * @param filterExp
    * @param refColumn

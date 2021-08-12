@@ -33,18 +33,14 @@ object PipelineService {
     val deDuplicatedDf: DataFrame = deDuplication(nullValueCheckInClickStreamDf, filterExp, refColumn, PRIMARY_KEY_COLUMNS_CLICKSTREAM_DATA,toOrderBy,WRITE_OUTPUT_FORMAT,WRITE_OUTPUT_TO_PATH_DEDUPLICATED_DATA_CLICKSTREAM)
     val deDuplicatedDfItemDF: DataFrame = deDuplication(nullValueCheckInItemDf, filterExp, refColumn, PRIMARY_KEY_COLUMNS_ITEM_DATA,None,WRITE_OUTPUT_FORMAT,WRITE_OUTPUT_TO_PATH_DEDUPLICATED_DATA_ITEM)
 
+    deDuplicatedDf.show()
 
-
-
-
-
-
-
- /*   /*DATE TYPE VALIDATION*/
+    /*DATE TYPE VALIDATION*/
     val validatedDataDf: DataFrame = dataTypeValidation(clickStreamDataDf, columnToBeValidated_Date, formatYouWantIn_Date, castTo)
+    validatedDataDf.show()
 
 
-    /*NULL VALUES REMOVAL AND WRITING THEM TO A FILE*/
+  /*  /*NULL VALUES REMOVAL AND WRITING THEM TO A FILE*/
     val nullValuesRemovedClickStreamDf: DataFrame = nullValuesCheckAndRemove(validatedDataDf, clickstream_columns_check_NULL, FILE_TYPE_WRITE, NULL_VALUES_PATH)
     val nullValuesRemovedItemDf: DataFrame = nullValuesCheckAndRemove(itemDataDf, item_columns_check_NULL, FILE_TYPE_WRITE, NULL_VALUES_PATH)
 
@@ -58,9 +54,6 @@ object PipelineService {
 
     /*TRIMMING OF SPACES*/
     val trimmedDataDf: DataFrame = trimFunction(consistentNamesDf, columnToBeTrimmed) */
-    //    val repartition : DataFrame = nullValueCheckInClickStreamDf.repartition(4)
-    //    val countDF = repartition.groupBy("redirection_source").count()
-    //    println(countDF.collect().mkString("->"))
-    //    scala.io.StdIn.readLine()
+
   }
 }
