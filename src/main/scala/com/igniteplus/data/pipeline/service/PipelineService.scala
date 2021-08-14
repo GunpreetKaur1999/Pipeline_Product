@@ -39,6 +39,8 @@ object PipelineService {
     val validatedDataDf: DataFrame = dataTypeValidation(clickStreamDataDf, columnToBeValidated_Date, formatYouWantIn_Date, castTo)
     validatedDataDf.show()
 
+    scala.io.StdIn.readLine()
+
 
   /*  /*NULL VALUES REMOVAL AND WRITING THEM TO A FILE*/
     val nullValuesRemovedClickStreamDf: DataFrame = nullValuesCheckAndRemove(validatedDataDf, clickstream_columns_check_NULL, FILE_TYPE_WRITE, NULL_VALUES_PATH)

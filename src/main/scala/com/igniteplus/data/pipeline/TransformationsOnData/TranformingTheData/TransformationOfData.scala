@@ -1,7 +1,8 @@
 package com.igniteplus.data.pipeline.TransformationsOnData.TranformingTheData
 
+//import com.igniteplus.data.pipeline.constants.ApplicationConstants.{TIMESTAMP_DATATYPE, TTIMESTAMP_FORMAT}
 import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.functions.{col, initcap, to_timestamp}
+import org.apache.spark.sql.functions.{col, initcap, to_timestamp, unix_timestamp}
 import com.igniteplus.data.pipeline.service.FileWriterService._
 
 object TransformationOfData {
@@ -20,5 +21,8 @@ object TransformationOfData {
     writeFile(df,"csv","data/Output/merged-data/dataTypeValidation_Data/dataTypeValidation.csv")
     dateValidated
   }
+
+
+
 
 }
