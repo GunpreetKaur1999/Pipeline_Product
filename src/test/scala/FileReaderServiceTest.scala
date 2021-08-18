@@ -17,9 +17,6 @@ class FileReaderServiceTest extends FunSuite with BeforeAndAfterAll {
     assert(rcount>0, "Count must be greater than 0")
   }
 
-
-
-
   override def afterAll(): Unit = {
     spark.stop()
   }
