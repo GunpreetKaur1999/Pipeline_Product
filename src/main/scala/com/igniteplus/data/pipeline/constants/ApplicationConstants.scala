@@ -59,7 +59,7 @@ object ApplicationConstants {
 
   //WRITER
   val FILE_TYPE_WRITE= "csv"
-
+  val ROW_NUMBER = "row_number"
 
 
 }

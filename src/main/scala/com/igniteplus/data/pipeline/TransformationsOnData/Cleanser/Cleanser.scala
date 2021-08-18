@@ -1,8 +1,9 @@
 package com.igniteplus.data.pipeline.TransformationsOnData.Cleanser
 
+import com.igniteplus.data.pipeline.constants.ApplicationConstants.ROW_NUMBER
 import com.igniteplus.data.pipeline.service.FileWriterService.writeFile
 import org.apache.spark.sql.expressions.Window
-import org.apache.spark.sql.functions.{col, row_number, when}
+import org.apache.spark.sql.functions.{col, desc, row_number, when}
 import org.apache.spark.sql.{Column, DataFrame}
 
 object Cleanser {
@@ -57,29 +58,35 @@ object Cleanser {
     }
   }
 
-  /*//def deDuplication(inputDF : DataFrame, orderBy : String, colNames : String*) : DataFrame =
-//{
-//if(orderBy == "nil")
-//{
-//val deDuplicate : DataFrame = inputDF.dropDuplicates(colNames.head, colNames.tail:_*)
-//deDuplicate
-//}
-//else
-//{
-//val winSpec = Window.partitionBy(colNames: _*)
-//.orderBy(desc(orderBy))
-//val deDuplicate : DataFrame = inputDF.withColumn("row_number", row_number().over(winSpec))
-//.filter("row_number==1")
-//.drop("row_number")
-//deDuplicate
-//}
-//}
+  /**
+   * FUNCTION TO REMOVE DUPLICATES
+   * @param df the dataframe
+   * @param primaryKeyColumns sequence of primary key columns of the df dataframe
+   * @param orderByColumn
+   * @return dataframe with no duplicates
+   */
+  def removeDuplicates(df: DataFrame,
+                       primaryKeyColumns: Seq[String],
+                       orderByColumn: Option[String]
+                      ): DataFrame = {
 
-  /*FUCTION TO TRIM THE SPACES*/
-  def trimFunction(inputDF:DataFrame,columnToBeTrimmed:String):DataFrame = {
-    val trimmed: DataFrame = inputDF.withColumn(columnToBeTrimmed, trim(col(columnToBeTrimmed)))
-    trimmed
+    val dfDropDuplicates: DataFrame = orderByColumn match {
+      case Some(orderCol) => {
+        val windowSpec = Window.partitionBy(primaryKeyColumns.map(col): _*).orderBy(desc(orderCol))
+        df.withColumn(colName = ROW_NUMBER, row_number().over(windowSpec))
+          .filter(col(ROW_NUMBER) === 1).drop(ROW_NUMBER)
+      }
+      case _ => df.dropDuplicates(primaryKeyColumns)
+    }
+    dfDropDuplicates
   }
+
+//
+//  /*FUCTION TO TRIM THE SPACES*/
+//  def trimFunction(inputDF:DataFrame,columnToBeTrimmed:String):DataFrame = {
+//    val trimmed: DataFrame = inputDF.withColumn(columnToBeTrimmed, trim(col(columnToBeTrimmed)))
+//    trimmed
+//  }
 
   /*FUNCTION TO CHECK NULL VALUES AND WRITE IT TO A FILE*/
 //  def nullValuesCheckAndRemove(inputDF:DataFrame,columnName:Seq[String],fileType:String,filePath:String) = {
@@ -100,5 +107,5 @@ object Cleanser {
 //  }
 
 
-*/
+
 }
