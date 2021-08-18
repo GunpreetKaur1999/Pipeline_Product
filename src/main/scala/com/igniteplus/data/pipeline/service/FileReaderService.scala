@@ -14,7 +14,6 @@ object FileReaderService{
    * @param spark
    * @return is successful a dataframe with data else empty dataframe
    */
-
   def readFile(path:String, fileFormat:String, writeOutputToPath:String)(implicit spark:SparkSession): DataFrame = {
     val fileDf: DataFrame = {
       try{
@@ -25,7 +24,6 @@ object FileReaderService{
           logError("Unable to read files ")
           spark.emptyDataFrame
       }
-
     }
 
     val dfDataCount: Long = fileDf.count()

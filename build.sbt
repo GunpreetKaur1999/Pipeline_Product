@@ -5,6 +5,7 @@ val sparkVersion = "2.3.2"
 val jacksonCore = "2.6.7"
 val scope = "compile"
 
+
 libraryDependencies ++= Seq(
   "org.scalamock" %% "scalamock" % "4.4.0" % Test,
   //dependency of reading configuration
@@ -19,5 +20,6 @@ libraryDependencies ++= Seq(
   //logging library
   "org.slf4j" % "slf4j-api" % "1.7.29",
   //for doing testing
-  "org.scalatest" %% "scalatest" % "3.1.0" % Test
+  "org.scalactic" %% "scalactic" % "3.1.0",
+  "org.scalatest" %% "scalatest" % "3.1.0" % "test"
 )

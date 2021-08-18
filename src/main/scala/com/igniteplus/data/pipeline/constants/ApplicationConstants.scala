@@ -60,6 +60,7 @@ object ApplicationConstants {
   //WRITER
   val FILE_TYPE_WRITE= "csv"
 
+  val WRITE_TEST_OUTPUT = "data/Output/merged-data/testOutput.csv"
 
 
 }
