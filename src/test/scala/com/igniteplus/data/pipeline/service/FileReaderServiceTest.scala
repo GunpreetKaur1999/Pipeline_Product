@@ -1,10 +1,12 @@
-import org.apache.spark.sql.SparkSession
-import org.scalatest.{BeforeAndAfterAll, FunSuite}
-import com.igniteplus.data.pipeline.service.FileReaderService.readFile
+package com.igniteplus.data.pipeline.service
+
+import com.igniteplus.data.pipeline.Helper.Helper._
 import com.igniteplus.data.pipeline.constants.ApplicationConstants._
 import com.igniteplus.data.pipeline.exception.FileReadException
+import com.igniteplus.data.pipeline.service.FileReaderService.readFile
+import org.apache.spark.sql.SparkSession
 import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.matchers.should
+import org.scalatest.{BeforeAndAfterAll, FunSuite}
 
 class FileReaderServiceTest1 extends FunSuite with BeforeAndAfterAll {
 
