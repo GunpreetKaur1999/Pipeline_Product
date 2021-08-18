@@ -20,18 +20,39 @@ class FileReaderServiceTest1 extends FunSuite with BeforeAndAfterAll {
     assert(rcount > 0, "Count must be greater than 0")
   }
 
+  test("throw exception in case it's not able to read data")  {
+    assertThrows[FileReadException] {
+      val sampleDF = readFile(readWrongLocation, fileFormat, writeOutputPath)(spark)
+    }
+  }
+
   override def afterAll(): Unit = {
     spark.stop()
   }
 
 }
 
-class FileReaderServiceTest extends AnyFlatSpec{
+class FileReaderServiceTest2 extends AnyFlatSpec with BeforeAndAfterAll{
+  @transient var spark: SparkSession = _
+
+  override def beforeAll(): Unit = {
+    spark = SparkSession.builder().appName("Tests").master("local").getOrCreate()
+  }
 
   "readFile() method" should "read data from the given location" in {
-    val sampleDF = readFile(readLocation,fileFormat,writeOutputPath)
+    val sampleDF = readFile(readLocation,fileFormat,writeOutputPath)(spark)
     val rcount = sampleDF.count()
     assertResult(countShouldBe)(rcount)
-
   }
+
+  "readFile() method" should "throw exception in case it's not able to read data" in {
+    assertThrows[FileReadException] {
+      val sampleDF = readFile(readWrongLocation, fileFormat, writeOutputPath)(spark)
+    }
+  }
+
+  override def afterAll(): Unit = {
+    spark.stop()
+  }
+
 }
