@@ -1,6 +1,4 @@
 package com.igniteplus.data.pipeline.service
-
-import com.igniteplus.data.pipeline.service.FileWriterService.writeFile
 import com.igniteplus.data.pipeline.service.FileWriterService.writeFile
 import com.igniteplus.data.pipeline.service.FileReaderService.readFile
 import org.apache.spark.sql.{DataFrame, SparkSession}

@@ -3,7 +3,6 @@ package com.igniteplus.data.pipeline.service
 import com.igniteplus.data.pipeline.exception.FileWriteException
 import org.apache.spark.sql.DataFrame
 import java.text.SimpleDateFormat
-import java.text.SimpleDateFormat
 import java.util.Calendar
 
 import java.io.{BufferedWriter, FileWriter, PrintWriter}
