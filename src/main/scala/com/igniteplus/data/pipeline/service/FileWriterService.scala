@@ -40,6 +40,7 @@ object FileWriterService {
       df.write
         .format(fileType)
         .option("path", filePath)
+        .option("header","true")
         .mode("overwrite")
         .save()
     }
